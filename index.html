@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Animation transitions</title>
+        <style>
+            html, body { height: 100vh; }
+
+            body {
+                display: grid;
+                place-content: center;
+                max-width: 45rem;
+                margin-inline: auto;
+            }
+
+            div {
+                visibility: hidden;
+                padding: .5rem;
+                margin: 0 auto 1rem;
+                border: 1px solid;
+                border-radius: .25rem;
+            }
+            
+            div.active, div.inactive {
+                visibility: visible;
+                animation-duration: 250ms;
+                animation-timing-function: cubic-bezier(0, 0, 0, 1);
+            }
+
+            div.active { animation-name: popIn; }
+            div.inactive { animation-name: popOut; }
+
+            @keyframes popIn {
+                  0% { opacity: 0; transform: scale( 50%); }
+                 80% { opacity: 1; transform: scale(110%); }
+                100% { opacity: 1; transform: scale(100%); }
+            }
+
+            @keyframes popOut {
+                  0% { opacity: 1; transform: scale(100%); }
+                 20% { opacity: 1; transform: scale(110%); }
+                100% { opacity: 0; transform: scale( 50%); }
+            }
+        </style>
+    </head>
+    <body>
+        <div>I am content</div>
+        <button>Click to toggle content</button>
+        <p>
+            The <code>div</code> has initially no class;
+            clicking the button will add the <code>active</code> class;
+            clicking again will replace it with the <code>inactive</code> class,
+            and as soon as the animation ends, the class is removed.
+        </p>
+
+        <script>
+            const div = document.querySelector("div");
+            const button = document.querySelector("button");
+
+            button.addEventListener("click", (e) => {
+                if (div.classList.contains("active")) {
+                    div.classList.remove("active");
+                    div.classList.add("inactive");
+                } else {
+                    div.classList.add("active");
+                }
+            });
+
+            div.addEventListener("animationend", (e) => {
+                if (e.animationName === "popOut") {
+                    div.removeAttribute("class");
+                }
+            });
+        </script>
+    </body>
+</html>
